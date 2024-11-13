@@ -261,12 +261,16 @@ comp_att_j2 = 4
 
 def start():
     print('Bienvenue sur Valamon version console.\n')
-    print("Choisisez ce que vous souhaitez faire parmi les options suivantes :\n\n1.Jouer, 2.Règles, 3. Quitter")
+    print("Choisissez ce que vous souhaitez faire parmi les options suivantes :\n\n1.Jouer, 2.Règles, 3. Quitter")
     selc = int(input())
     if selc == 1:
         affichage_plateau()
     elif selc == 2:
         webbrowser.open('rules.papylulu.ovh')
+    elif selc > 3 or selc < 1:
+        print('Le numéro doit être compris entre 1 et 3')
+        input()
+        start()
     
 def affichage_plateau():
     subprocess.run('cls', shell = True)
@@ -288,12 +292,24 @@ def affichage_plateau():
     elif selc == 5:
         subprocess.run('cls', shell = True)
         start()
+    elif selc > 5 or selc < 1:
+        print('Le numéro doit être compris entre 1 et 5')
+        input()
+        affichage_plateau()
         
 def carte_ad():
     print("\nColonne 0 : La plus à gauche, Colonne 4 : La plus à droite")
     print("Ligne 0 : La plus loin du centre, Ligne 1 : La plus proche du centre")
     lgn = int(input("\nDonner la ligne de la carte\n"))
+    if lgn > 1 or lgn < 0:
+        print('Le numéro doit être compris entre 0 et 1')
+        input()
+        carte_ad()
     col = int(input("\nDonner la colonne de la carte\n"))
+    if col > 4 or col < 0:
+        print('Le numéro doit être compris entre 0 et 4')
+        input()
+        carte_ad()
     selc = []
     selc.append(lgn)
     selc.append(col)
@@ -317,7 +333,15 @@ def carte_jr():
     print("\nColonne 0 : La plus à gauche, Colonne 4 : La plus à droite")
     print("Ligne 0 : La plus proche du centre, Ligne 1 : La plus loin du centre")
     lgn = int(input("\nDonner la ligne de la carte\n"))
+    if lgn > 1 or lgn < 0:
+        print('Le numéro doit être compris entre 0 et 1')
+        input()
+        carte_jr()
     col = int(input("\nDonner la colonne de la carte\n"))
+    if lgn > 4 or lgn < 0:
+        print('Le numéro doit être compris entre 0 et 4')
+        input()
+        carte_jr()
     selc = []
     selc.append(lgn)
     selc.append(col)
@@ -346,6 +370,10 @@ def attaque_j1():
         selc = int(input("Voulez-vous continuer ou passer votre tour?\n1.Passer 2.Continuer"))
         if selc == 1:
             comp_att_j1 = 0
+        elif selc > 2 or selc < 1:
+            print('Le numéro doit être compris entre 1 et 2')
+            input()
+            attaque_j1()
         elif selc == 2:     
             PlateauBOT.get_ligne()
             print("\n")
@@ -353,21 +381,31 @@ def attaque_j1():
             print("\nColonne 0 : La plus à gauche, Colonne 4 : La plus à droite")
             print("Ligne 0 : La plus proche du centre, Ligne 1 : La plus loin du centre")
             lgn = int(input("\nDonner la ligne de la carte\n"))
+            if lgn > 1 or lgn < 0:
+                print('Le numéro doit être compris entre 0 et 1')
+                input()
+                attaque_j1()
             col = int(input("\nDonner la colonne de la carte\n"))
+            if col > 4 or col < 0:
+                print('Le numéro doit être compris entre 0 et 4')
+                input()
+                attaque_j1()
             selc = []
             selc.append(lgn)
             selc.append(col)
             subprocess.run('cls', shell = True)
-            compteur = 0
+            compteur = len(carte_rects_j1)-1
             if carte_rects_j1 != []:
-                while carte_rects_j1[compteur][1] != selc[0] or carte_rects_j1[compteur][2] != selc[1]:
-                    compteur += 1
-                    if compteur == 6:
+                while compteur > -1 and carte_rects_j1[compteur][1] != selc[0] or carte_rects_j1[compteur][2] != selc[1]:
+                    compteur -= 1
+                    if compteur < 0:
                         break
-                if Joueur1.liste[carte_rects_j1[compteur][0]] and carte_rects_j1[compteur][2]==col:
+                if compteur != -1 and Joueur1.liste[carte_rects_j1[compteur][0]] and carte_rects_j1[compteur][2]==col:
                     print(Joueur1.liste[carte_rects_j1[compteur][0]])
                 else:
                     print('Carte inexistante ou non présente sur le plateau.')
+                    input('Appuyez sur Entrée pour réessayer')
+                    attaque_j1()
             else:
                 print('Plateau vide.')
                 input('Appuyez sur Entrer pour continuer')
@@ -480,6 +518,10 @@ def poser_carte():
     print(l)
     print("La liste de ces cartes sont triés par ordre croissant de leur PV.")
     a = int(input(f"Donnez l'indice de la carte que vous souhaitez placer. (0 : La plus à gauche de la liste, {len(Joueur1.liste_placement)-1} : La plus à droite) "))
+    if a > len(Joueur1.liste_placement)-1 or a < 0:
+        print(f'Le numéro doit être compris entre 0 et {len(Joueur1.liste_placement)-1}')
+        input()
+        poser_carte()
     b = a
     for i in range(len(Joueur1.liste)):
         if Joueur1.liste[i] == Joueur1.liste_placement[a]:
@@ -491,6 +533,10 @@ def selc_eplacement(a, c):
     subprocess.run('cls', shell = True)
     print(Joueur1.liste[a])
     b = int(input("1.Placer la carte, 2.Changer de carte"))
+    if b > 2 or b < 1:
+        print('Le numéro doit être compris entre 1 et 2')
+        input()
+        selc_eplacement(a,c)
     if b == 1:
         PlateauBOT.get_ligne()
         print("\n")
@@ -502,18 +548,20 @@ def selc_eplacement(a, c):
         selc = []
         selc.append(lgn)
         selc.append(col)
-        if PlateauJ1.ligne[lgn][col]!='Y':
+        if lgn > 1 or col > 4 or lgn < 0 or col < 0 :
+            print("Vous êtes en dehors du plateau. Recommencez en tapant Entrée.")
+            input()
+            selc_eplacement(a,c)
+        elif PlateauJ1.ligne[lgn][col]!='Y':
             carte_rects_j1.append([a,lgn,col])
             print(carte_rects_j1)
             PlateauJ1.ligne[lgn][col] = 'Y'
             Joueur1.liste_placement.pop(c)
             affichage_plateau()
-        elif lgn > 1 or col > 4 or lgn < 0 or col < 0 :
-            print("Vous êtes en dehors du plateau.")
-            selc_eplacement(a)
         else:
             print('Une carte est déjà placée ici.')
-            selc_eplacement(a)
+            input()
+            selc_eplacement(a,c)
     else:
         poser_carte()
 
