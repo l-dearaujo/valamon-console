@@ -570,13 +570,13 @@ def win():
     subprocess.run('cls', shell = True)
     print("Vous avez gagné la partie. Félicitations!")
     print("Pour rejouer, relancez le script")
-    input("Faites Ctrl-Z (Spider) ou Alt-F4 (Terminal) pour quitter le jeu")
+    input("Faites Ctrl-C (Spider) ou Alt-F4 (Terminal) pour quitter le jeu")
 
     
 def gameover():
     subprocess.run('cls', shell = True)
     print("Vous avez perdu la partie...")
     print("Pour rejouer, relancez le script")
-    input("Faites Ctrl-Z (Spider) ou Alt-F4 (Terminal) pour quitter le jeu")
+    input("Faites Ctrl-C (Spider) ou Alt-F4 (Terminal) pour quitter le jeu")
 
 start()
